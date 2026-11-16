@@ -7,6 +7,6 @@ const APP_CONFIG = {
   SUBTITLE: 'ESPANSA DIGITAL LEARNING PLATFORM',
   SCHOOL_NAME: 'SMPN 1 Panawangan',
   TAGLINE: 'Navigate Knowledge, Create the Future',
-  LOGO_PATH: './assets/logo-enavia.png', // Path relatif di dalam repo GitHub
+  LOGO_PATH: './assets/Logo E-NAVIA.png', // Path relatif di dalam repo GitHub
   TAHUN_PELAJARAN: '2026/2027 • Ganjil'
 };
