@@ -1,1 +1,181 @@
+<!-- ==========================================
+     FILE: index.html
+     ========================================== -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-NAVIA | SMPN 1 Panawangan</title>
+  <link rel="icon" type="image/png" href="./assets/logo-enavia.png">
 
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            enavia: { navy: '#142C50', blue: '#258BD8', cyan: '#38BBD1', gold: '#F2B84B', bg: '#F4F7FB' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="antialiased selection:bg-[#258BD8] selection:text-white">
+
+  <!-- 1. LAYAR LOGIN -->
+  <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#142C50] via-[#1B3B6B] to-[#258BD8] relative overflow-hidden">
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-[#38BBD1] rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-[#F2B84B] rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden z-10 border border-white/20">
+      <div class="bg-[#142C50] px-8 pt-8 pb-6 text-center">
+        <img id="login-logo" src="./assets/logo-enavia.png" alt="Logo E-NAVIA" class="h-16 mx-auto mb-3 object-contain drop-shadow-md">
+        <h1 id="login-app-name" class="text-2xl font-extrabold text-white tracking-wide">E-NAVIA</h1>
+        <p id="login-subtitle" class="text-[11px] font-semibold tracking-widest text-[#38BBD1] uppercase mt-0.5">ESPANSA DIGITAL LEARNING PLATFORM</p>
+        <div id="login-school" class="mt-3 inline-block px-3 py-1 rounded-full bg-white/10 text-xs text-white/90 font-medium">
+          SMPN 1 Panawangan
+        </div>
+      </div>
+
+      <form id="form-login" onsubmit="handleLogin(event)" class="p-8 space-y-5">
+        <div>
+          <h2 class="text-lg font-bold text-[#142C50]">Selamat Datang Kembali</h2>
+          <p id="login-tagline" class="text-xs text-slate-500 mt-0.5 italic">"Navigate Knowledge, Create the Future"</p>
+        </div>
+
+        <div id="login-alert" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs flex items-center gap-2">
+          <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+          <span id="login-alert-text">Username atau kata sandi salah.</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">NIP / NIS / Email</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+              <i data-lucide="user" class="w-4 h-4"></i>
+            </span>
+            <input type="text" id="login-username" required placeholder="Masukkan NIP, NIS, atau Email"
+              class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#258BD8] focus:bg-white transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Kata Sandi</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+            </span>
+            <input type="password" id="login-password" required placeholder="Masukkan kata sandi"
+              class="w-full pl-10 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#258BD8] focus:bg-white transition">
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-login"
+          class="w-full py-3 px-4 bg-gradient-to-r from-[#258BD8] to-[#1D70B8] hover:from-[#1D70B8] hover:to-[#142C50] text-white font-semibold text-sm rounded-xl shadow-lg shadow-blue-500/30 transition flex items-center justify-center gap-2">
+          <span>Masuk ke Platform</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+
+        <div class="pt-2 text-center border-t border-slate-100">
+          <p class="text-[11px] text-slate-400">Lupa kata sandi? Hubungi Administrator Sekolah.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. APP SHELL UTAMA -->
+  <div id="app-shell" class="hidden min-h-screen flex bg-[#F4F7FB]">
+    <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/50 z-30 hidden lg:hidden backdrop-blur-xs"></div>
+
+    <!-- SIDEBAR NAVY -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-[#142C50] text-white flex flex-col transition-transform duration-300 -translate-x-full lg:translate-x-0 shrink-0">
+      <div class="p-6 flex items-center gap-3 border-b border-white/10">
+        <img src="./assets/logo-enavia.png" alt="E-NAVIA" class="w-10 h-10 object-contain">
+        <div>
+          <h1 class="font-heading font-extrabold text-lg tracking-wide leading-tight">E-NAVIA</h1>
+          <p class="text-[10px] text-[#38BBD1] font-medium tracking-wider uppercase">Digital Learning</p>
+        </div>
+      </div>
+
+      <nav id="sidebar-menu" class="flex-1 px-4 py-5 space-y-1.5 overflow-y-auto"></nav>
+
+      <div class="p-4 border-t border-white/10 bg-[#0F223F]">
+        <div class="flex items-center gap-3 mb-3 px-2">
+          <div id="sidebar-avatar" class="w-9 h-9 rounded-full bg-gradient-to-tr from-[#258BD8] to-[#38BBD1] flex items-center justify-center font-bold text-sm text-white shrink-0">U</div>
+          <div class="overflow-hidden">
+            <p id="sidebar-user-name" class="text-xs font-semibold truncate">Nama Pengguna</p>
+            <p id="sidebar-user-role" class="text-[11px] text-[#F2B84B] font-medium">Peran</p>
+          </div>
+        </div>
+        <button onclick="logoutUser()" class="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-white/5 hover:bg-red-500/20 text-white/80 hover:text-red-300 text-xs font-medium transition">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span>Keluar Aplikasi</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- AREA KONTEN -->
+    <div class="flex-1 flex flex-col min-w-0">
+      <header class="h-16 bg-white border-b border-slate-200/80 px-4 lg:px-8 flex items-center justify-between sticky top-0 z-20">
+        <div class="flex items-center gap-3">
+          <button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+          <div>
+            <h2 id="topbar-school-name" class="font-heading font-bold text-sm lg:text-base text-[#142C50]">SMPN 1 Panawangan</h2>
+            <p class="text-[11px] text-slate-400 hidden sm:block">Berprestasi, Berkarakter, Berdaya Saing</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="topbar-tapel" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#258BD8] text-xs font-semibold">
+            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+            <span>2026/2027 • Ganjil</span>
+          </span>
+          <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+            <div id="topbar-avatar" class="w-8 h-8 rounded-full bg-[#142C50] text-white text-xs font-bold flex items-center justify-center">U</div>
+            <span id="topbar-user-name" class="text-xs font-semibold text-slate-700 hidden sm:inline">User</span>
+          </div>
+        </div>
+      </header>
+
+      <main id="main-content" class="flex-1 p-4 lg:p-8 max-w-7xl w-full mx-auto"></main>
+    </div>
+  </div>
+
+  <!-- 3. MODAL UNIVERSAL -->
+  <div id="universal-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <h3 id="modal-title" class="font-heading font-bold text-base text-[#142C50]">Judul Modal</h3>
+        <button onclick="closeModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-200/70 hover:text-slate-700">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div id="modal-body" class="p-6 overflow-y-auto space-y-4 text-sm"></div>
+    </div>
+  </div>
+
+  <!-- 4. TOAST CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2"></div>
+
+  <!-- SCRIPTS -->
+  <script src="./js/config.js"></script>
+  <script src="./js/api.js"></script>
+  <script src="./js/views.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
